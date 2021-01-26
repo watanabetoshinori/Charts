@@ -39,4 +39,7 @@ public protocol BarChartDataSetProtocol: BarLineScatterCandleBubbleChartDataSetP
     
     /// array of labels used to describe the different values of the stacked bars
     var stackLabels: [String] { get set }
+
+    /// the radius, in points, for the rounded corners on the bars.
+    var cornerRadius: CGFloat { get set }
 }

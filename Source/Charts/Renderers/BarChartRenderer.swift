@@ -277,7 +277,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         for i in barData.indices
         {
             guard let set = barData[i] as? BarChartDataSetProtocol else {
-                fatalError("Datasets for BarChartRenderer must conform to IBarChartDataset")
+                fatalError("Datasets for BarChartRenderer must conform to BarChartDataSetProtocol")
             }
 
             guard set.isVisible else { continue }
@@ -379,8 +379,18 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
             
-            context.fill(barRect)
-            
+            if dataSet.cornerRadius > 0.0
+            {
+                let path = UIBezierPath(roundedRect: barRect,
+                                        byRoundingCorners: [.topLeft, .topRight],
+                                        cornerRadii: CGSize(width: dataSet.cornerRadius, height: dataSet.cornerRadius))
+
+                context.addPath(path.cgPath)
+                context.fillPath()
+            } else {
+                context.fill(barRect)
+            }
+
             if drawBorder
             {
                 context.setStrokeColor(borderColor.cgColor)
